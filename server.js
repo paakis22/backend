@@ -6,7 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';  
-
+import classRoutes from './routes/classRoutes.js'; // Ensure this is the correct import
 
 dotenv.config();
 
@@ -19,6 +19,8 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);   
 app.use('/api/admin', adminRoutes); 
+app.use('/api/classrooms', classRoutes);
+
  // Ensure this is the correct import 
 
 app.get('/', (req, res) => {
