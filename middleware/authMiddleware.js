@@ -16,3 +16,17 @@ export const protect = (req, res, next) => {
     return res.status(401).json({ error: 'Invalid token' });
   }
 };
+
+// Middleware to check if the user is an admin
+
+
+
+export const verifyToken = (req, res, next) => {
+  // your logic here
+  next();
+};
+
+export const isAdmin = (req, res, next) => {
+  // your logic here
+  next();
+};

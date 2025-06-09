@@ -9,3 +9,6 @@ const router = express.Router();
 router.get('/', protect, authorizeRoles('admin'), getAllUsers);
 
 export default router;
+
+
+
