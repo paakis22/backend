@@ -5,6 +5,11 @@ const classSchema = new mongoose.Schema({
   description: String,
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  duration: String,
+  image: {
+    url: String,
+    public_id: String,
+  },
   createdAt: { type: Date, default: Date.now }
 });
 
