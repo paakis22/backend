@@ -3,9 +3,10 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
-  password: String,
+  password: String, 
+  Gender: String,
   role: {
-    type: String,
+    type: String, 
     enum: ['student', 'teacher', 'admin'],
     default: 'student'
   }

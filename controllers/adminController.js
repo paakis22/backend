@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+
 // Get all users (Admin only)
 export const getAllUsers = async (req, res) => {
   try {
@@ -8,6 +9,7 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch users' });
   }
 };
+
 // Update a user by ID (Admin only)
 export const updateUser = async (req, res) => {
   const { id } = req.params;
@@ -26,6 +28,8 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: 'Failed to update user' });
   }
 };
+
+
 // Delete a user by ID (Admin only)
 export const deleteUser = async (req, res) => {
   const { id } = req.params;

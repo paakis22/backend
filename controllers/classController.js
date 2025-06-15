@@ -4,7 +4,7 @@ export const createClass = async (req, res) => {
   try {
     const newClass = await Classroom.create({
       title: req.body.title,
-      description: req.body.description,
+      module: req.body.module,
       teacher: req.user.id,
       duration: req.body.duration,
       image: req.file
