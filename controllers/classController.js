@@ -1,4 +1,6 @@
-import Classroom from '../models/Classroom.js';
+import Classroom from '../models/Classroom.js'; 
+
+//createclass
 
 export const createClass = async (req, res) => {
   try {
@@ -22,7 +24,7 @@ export const createClass = async (req, res) => {
   }
 };
 
-
+//get allclass
 
 export const getAllClasses = async (req, res) => {
   try {
@@ -32,7 +34,9 @@ export const getAllClasses = async (req, res) => {
     console.error("🔥 Get All Classes Error:", err);
     res.status(500).json({ error: 'Error fetching classes' });
   }
-};
+}; 
+
+//get classby id
 
 export const getClassById = async (req, res) => {
   try {
@@ -43,7 +47,10 @@ export const getClassById = async (req, res) => {
     console.error("🔥 Get Class By ID Error:", err);
     res.status(500).json({ error: 'Error fetching class' });
   }
-};
+}; 
+
+
+//join class
 
 export const joinClass = async (req, res) => {
   try {
@@ -60,12 +67,14 @@ export const joinClass = async (req, res) => {
     console.error("🔥 Join Class Error:", err);
     res.status(500).json({ error: 'Could not join class' });
   }
-};
+}; 
+
+
+//update class
 
 export const updateClassroom = async (req, res) => {
   const { id } = req.params;
   const { title, description } = req.body;
-
   try {
     const classroom = await Classroom.findById(id);
     if (!classroom) {
@@ -90,6 +99,8 @@ export const updateClassroom = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+//delete class
 
 export const deleteClassroom = async (req, res) => {
   const { id } = req.params;

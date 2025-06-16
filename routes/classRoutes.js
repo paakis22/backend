@@ -17,7 +17,7 @@ const router = express.Router();
 router.post(
   '/create',
   protect,
-  authorizeRoles('teacher'),
+  authorizeRoles('admin'),
   upload.single('image'),
   createClass
 );
@@ -32,6 +32,6 @@ router.get('/:id', protect, getClassById);
 router.post('/:id/join', protect, authorizeRoles('student'), joinClass);
 
 // Update class
-router.put('/:id', protect, authorizeRoles('teacher'), upload.single('image'), updateClassroom);
+router.put('/:id', protect, authorizeRoles('admin'), upload.single('image'), updateClassroom);
 
 export default router;

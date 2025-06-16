@@ -8,6 +8,8 @@ import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import classRoutes from './routes/classRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'; // ✔ consistent naming
+import teacherRoutes from './routes/teacherRoutes.js'; // ✔ added teacher routes
+import paymentRoutes from './routes/paymentRoutes.js';
 
 dotenv.config();
 
@@ -30,6 +32,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/classrooms', classRoutes);
 app.use('/api/upload', uploadRoutes); // Mount upload route last, for clarity
+app.use('/api/teachers', teacherRoutes); // ✔ added teacher routes
+app.use('/api/payment', paymentRoutes);
+
+
 
 // Root route
 app.get('/', (req, res) => {
