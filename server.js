@@ -9,7 +9,9 @@ import adminRoutes from './routes/adminRoutes.js';
 import classRoutes from './routes/classRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'; // ✔ consistent naming
 import teacherRoutes from './routes/teacherRoutes.js'; // ✔ added teacher routes
-import paymentRoutes from './routes/paymentRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js'; 
+import passport from 'passport';
+import session from 'express-session';
 
 dotenv.config();
 
@@ -34,6 +36,23 @@ app.use('/api/classrooms', classRoutes);
 app.use('/api/upload', uploadRoutes); // Mount upload route last, for clarity
 app.use('/api/teachers', teacherRoutes); // ✔ added teacher routes
 app.use('/api/payment', paymentRoutes);
+
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', authRoutes);
+
+app.get('/dashboard', (req, res) => {
+  res.send(`Welcome ${req.user?.name}`);
+});
+
 
 
 

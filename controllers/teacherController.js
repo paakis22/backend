@@ -4,22 +4,30 @@ import Teacher from '../models/Teacher.js';
 export const createTeacher = async (req, res) => {
   try {
     const { name, email, bio } = req.body;
-    const teacher = await Teacher.create({
+
+    const existing = await Teacher.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+
+    const newTeacher = await Teacher.create({
       name,
       email,
       bio,
-      image: req.file
-        ? {
-            url: req.file.path,
-            public_id: req.file.filename,
-          }
-        : undefined,
+      image: {
+        url: req.file?.path || '',
+        public_id: req.file?.filename || ''
+      }
     });
-    res.status(201).json(teacher);
+
+    res.status(201).json(newTeacher);
+
   } catch (err) {
-    res.status(500).json({ error: 'Cannot create teacher' });
+    console.error("🔥 Teacher Creation Error:", err.message);
+    res.status(500).json({ error: 'Cannot create teacher', detail: err.message });
   }
 };
+
 
 // Get All
 export const getAllTeachers = async (req, res) => {

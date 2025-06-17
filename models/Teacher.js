@@ -3,21 +3,33 @@ import mongoose from 'mongoose';
 const teacherSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: [true, 'Name is required'],
+    trim: true,
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true,
   },
   bio: {
     type: String,
-    default: ''
+    default: '',
+    trim: true,
   },
-  avatar: {
-    type: String, // store image URL (e.g., Cloudinary)
-    default: ''
-  }
-}, { timestamps: true });
+  image: {
+    url: {
+      type: String,
+      default: '',
+    },
+    public_id: {
+      type: String,
+      default: '',
+    },
+  },
+}, {
+  timestamps: true // Automatically adds createdAt & updatedAt
+});
 
 export default mongoose.model('Teacher', teacherSchema);
