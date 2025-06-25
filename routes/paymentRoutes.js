@@ -1,10 +1,10 @@
 // routes/paymentRoutes.js
-import express from 'express';
-import { createPaymentIntent } from '../controllers/paymentController.js';
-import { protect } from '../middleware/authMiddleware.js';
+// import express from 'express';
+// import { createPaymentIntent } from '../controllers/paymentController.js';
+// import { protect } from '../middleware/authMiddleware.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-router.post('/create-payment-intent', protect, createPaymentIntent);
+// router.post('/create-payment-intent', createPaymentIntent);
 
-export default router;
+// export default router;

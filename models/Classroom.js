@@ -10,6 +10,8 @@ const classSchema = new mongoose.Schema({
     url: String,
     public_id: String,
   },
+ 
+
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -8,8 +8,9 @@ import {
 } from '../controllers/classController.js';
 
 import { protect } from '../middleware/authMiddleware.js';
-import { authorizeRoles } from '../middleware/roleMiddleware.js';
-import upload from '../middleware/cloudinaryUpload.js'; // for image upload
+import { authorizeRoles } from '../middleware/authMiddleware.js';
+import upload from '../middleware/cloudinaryUpload.js'; // for image upload 
+
 
 const router = express.Router();
 
@@ -17,21 +18,25 @@ const router = express.Router();
 router.post(
   '/create',
   protect,
-  authorizeRoles('admin'),
+  authorizeRoles('teacher'),
   upload.single('image'),
   createClass
 );
 
 // Get all classes
-router.get('/', protect, getAllClasses);
+router.get('/', protect,authorizeRoles('user'), getAllClasses);
 
 // Get class by ID
-router.get('/:id', protect, getClassById);
+router.get('/:id', protect,authorizeRoles('user'), getClassById);
 
 // Join a class
 router.post('/:id/join', protect, authorizeRoles('student'), joinClass);
 
 // Update class
-router.put('/:id', protect, authorizeRoles('admin'), upload.single('image'), updateClassroom);
+router.put('/:id', protect, authorizeRoles('teacher'), upload.single('image'), updateClassroom);
+
+
 
 export default router;
+
+

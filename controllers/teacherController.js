@@ -1,29 +1,34 @@
 import Teacher from '../models/Teacher.js';
 
-// Create
+// controllers/teacherController.js
+
 export const createTeacher = async (req, res) => {
   try {
-    const { name, email, bio } = req.body;
+    const { name, email, bio, gender, address } = req.body;
 
     const existing = await Teacher.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ error: 'Email already exists' });
-    }
+    if (existing) return res.status(400).json({ error: 'Email already exists' });
 
     const newTeacher = await Teacher.create({
       name,
       email,
       bio,
+      gender,
+      address,
+      resume: {
+        url: req.files?.resume?.[0]?.path || '',
+        public_id: req.files?.resume?.[0]?.filename || ''
+      },
       image: {
-        url: req.file?.path || '',
-        public_id: req.file?.filename || ''
-      }
+        url: req.files?.image?.[0]?.path || '',
+        public_id: req.files?.image?.[0]?.filename || ''
+      },
     });
 
-    res.status(201).json(newTeacher);
+    res.status(201).json({ message: 'Profile submitted. Awaiting admin approval.', teacher: newTeacher });
 
   } catch (err) {
-    console.error("🔥 Teacher Creation Error:", err.message);
+    console.error("Teacher Creation Error:", err.message);
     res.status(500).json({ error: 'Cannot create teacher', detail: err.message });
   }
 };

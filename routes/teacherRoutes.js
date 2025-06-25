@@ -6,14 +6,34 @@ import {
   updateTeacher,
   deleteTeacher
 } from '../controllers/teacherController.js';
-import upload from '../middleware/cloudinaryUpload.js'; // if you're using image upload
+
+import multer from 'multer';
+import { storage } from '../middleware/cloudinaryUpload.js'; // ✅ Make sure the filename is correct
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
-router.post('/', upload.single('image'), createTeacher);
+// CREATE: Teacher with image and resume
+router.post(
+  '/',
+  upload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'resume', maxCount: 1 }
+  ]),
+  createTeacher
+);
+
+//  Get all teachers
 router.get('/', getAllTeachers);
+
+// Get single teacher by ID
 router.get('/:id', getTeacherById);
+
+// Teacher profile image
 router.put('/:id', upload.single('image'), updateTeacher);
+
+//  DELETE: Teacher
 router.delete('/:id', deleteTeacher);
 
 export default router;

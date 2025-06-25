@@ -1,35 +1,26 @@
+
+// models/Teacher.js
 import mongoose from 'mongoose';
 
 const teacherSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  bio: {
-    type: String,
-    default: '',
-    trim: true,
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  gender: { type: String },
+  bio: { type: String },
+  address: { type: String },
+  resume: {
+    url: String,
+    public_id: String,
   },
   image: {
-    url: {
-      type: String,
-      default: '',
-    },
-    public_id: {
-      type: String,
-      default: '',
-    },
+    url: String,
+    public_id: String,
   },
-}, {
-  timestamps: true // Automatically adds createdAt & updatedAt
-});
+  status: {
+    type: String,
+    enum: ['pending', 'approved'],
+    default: 'pending',
+  },
+}, { timestamps: true });
 
 export default mongoose.model('Teacher', teacherSchema);

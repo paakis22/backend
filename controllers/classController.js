@@ -19,7 +19,7 @@ export const createClass = async (req, res) => {
 
     res.status(201).json(newClass);
   } catch (err) {
-    console.error("🔥 Error creating class:", err);
+    console.error(" Error creating class:", err);
     res.status(500).json({ error: 'Cannot create class' });
   }
 };
@@ -31,7 +31,7 @@ export const getAllClasses = async (req, res) => {
     const classes = await Classroom.find().populate('teacher', 'name email');
     res.json(classes);
   } catch (err) {
-    console.error("🔥 Get All Classes Error:", err);
+    console.error(" Get All Classes Error:", err);
     res.status(500).json({ error: 'Error fetching classes' });
   }
 }; 
@@ -44,7 +44,7 @@ export const getClassById = async (req, res) => {
     if (!classroom) return res.status(404).json({ error: 'Class not found' });
     res.json(classroom);
   } catch (err) {
-    console.error("🔥 Get Class By ID Error:", err);
+    console.error("Get Class By ID Error:", err);
     res.status(500).json({ error: 'Error fetching class' });
   }
 }; 
@@ -64,7 +64,7 @@ export const joinClass = async (req, res) => {
 
     res.json({ message: 'Joined class successfully' });
   } catch (err) {
-    console.error("🔥 Join Class Error:", err);
+    console.error(" Join Class Error:", err);
     res.status(500).json({ error: 'Could not join class' });
   }
 }; 
@@ -95,7 +95,7 @@ export const updateClassroom = async (req, res) => {
 
     res.status(200).json({ message: 'Classroom updated successfully', classroom });
   } catch (error) {
-    console.error("🔥 Update Classroom Error:", error);
+    console.error("  Update Classroom Error:", error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -119,7 +119,12 @@ export const deleteClassroom = async (req, res) => {
     await Classroom.findByIdAndDelete(id);
     res.status(200).json({ message: 'Classroom deleted successfully' });
   } catch (error) {
-    console.error("🔥 Delete Classroom Error:", error);
+    console.error("  Delete Classroom Error:", error);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+
+
+

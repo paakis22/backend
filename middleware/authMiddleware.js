@@ -17,6 +17,15 @@ export const protect = (req, res, next) => {
   }
 };
 
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    next();
+  };
+};
+
 
 // Middleware to check if the user is an admin
 

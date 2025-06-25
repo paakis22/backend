@@ -44,8 +44,19 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+// Approve a teacher (Admin only) 
 
+export const approveTeacher = async (req, res) => {
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+    if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
+    teacher.status = 'approved';
+    await teacher.save();
 
-
+    res.status(200).json({ message: 'Teacher approved' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 

@@ -9,8 +9,9 @@ import adminRoutes from './routes/adminRoutes.js';
 import classRoutes from './routes/classRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'; // ✔ consistent naming
 import teacherRoutes from './routes/teacherRoutes.js'; // ✔ added teacher routes
-import paymentRoutes from './routes/paymentRoutes.js'; 
-import passport from 'passport';
+import studentRoutes from './routes/studentRoutes.js';
+// import paymentRoutes from './routes/paymentRoutes.js'; 
+import passport from 'passport';     // google with login
 import session from 'express-session';
 
 dotenv.config();
@@ -25,6 +26,11 @@ connectDB();
 app.use(cors());
 app.use(express.json()); // For parsing application/json
 
+
+
+app.use(cors({  origin: 'http://localhost:5173', // Adjust this to your frontend URL
+  credentials: true // Allow credentials (cookies, authorization headers, etc. 
+  }));  
 // Static file serving (for uploaded images, etc.)
 app.use('/uploads', express.static('uploads'));
 
@@ -34,8 +40,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/classrooms', classRoutes);
 app.use('/api/upload', uploadRoutes); // Mount upload route last, for clarity
-app.use('/api/teachers', teacherRoutes); // ✔ added teacher routes
-app.use('/api/payment', paymentRoutes);
+app.use('/api/teachers', teacherRoutes); //  added teacher routes
+app.use('/api/students', studentRoutes); // added student routes
+// app.use('/api/payment', paymentRoutes);
 
 
 app.use(session({
@@ -58,9 +65,9 @@ app.get('/dashboard', (req, res) => {
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('🚀 API is running...');
+  res.send(' API is running...');
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
