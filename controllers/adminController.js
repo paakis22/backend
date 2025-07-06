@@ -1,4 +1,7 @@
 import User from '../models/User.js';
+import Payment from '../models/Payment.js'; 
+
+
 
 // Get all users (Admin only)
 export const getAllUsers = async (req, res) => {
@@ -10,7 +13,8 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// Update a user by ID (Admin only)
+// Update a user by ID (Admin only)  
+
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { name, email, role } = req.body;
@@ -30,7 +34,8 @@ export const updateUser = async (req, res) => {
 };
 
 
-// Delete a user by ID (Admin only)
+// Delete a user by ID (Admin only)  
+
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -60,3 +65,15 @@ export const approveTeacher = async (req, res) => {
   }
 };
 
+
+export const getAllPayments = async (req, res) => {
+  try {
+    // Optionally verify admin role: e.g. if (req.user.role !== 'admin') return res.status(403)
+    const payments = await Payment.find().sort({ createdAt: -1 });
+
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error('Error fetching payments:', error.message);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+};

@@ -4,7 +4,7 @@ import Teacher from '../models/Teacher.js';
 
 export const createTeacher = async (req, res) => {
   try {
-    const { name, email, bio, gender, address } = req.body;
+    const { name, email, bio, gender, address ,subject} = req.body;
 
     const existing = await Teacher.findOne({ email });
     if (existing) return res.status(400).json({ error: 'Email already exists' });
@@ -12,6 +12,7 @@ export const createTeacher = async (req, res) => {
     const newTeacher = await Teacher.create({
       name,
       email,
+      subject,
       bio,
       gender,
       address,
@@ -85,3 +86,23 @@ export const deleteTeacher = async (req, res) => {
     res.status(500).json({ error: 'Error deleting teacher' });
   }
 };
+
+
+
+
+// // controller/teacherController.js
+// export const getMyStudents = async (req, res) => {
+//   try {
+//     const classes = await Classroom.find({ teacher: req.user.id }).populate({
+//       path: 'students',
+//       select: 'name email gender', // what you want to show
+//     });
+
+//     const students = classes.flatMap(cls => cls.students); // combine all students
+
+//     res.json(students);
+//   } catch (err) {
+//     res.status(500).json({ error: 'Failed to fetch students' });
+//   }
+// };
+

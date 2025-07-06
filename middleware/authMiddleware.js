@@ -1,5 +1,6 @@
 // middleware/authMiddleware.js
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';  
 
 export const protect = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -40,3 +41,6 @@ export const isAdmin = (req, res, next) => {
   // your logic here
   next();
 };
+
+
+

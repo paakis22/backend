@@ -1,9 +1,9 @@
-// utils/stripe.js
-// import Stripe from 'stripe';
+utils/stripe.js
+import Stripe from 'stripe';
 
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // use your actual Stripe secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // use your actual Stripe secret key
 
-// export default stripe;
+export default stripe;
 
 
 

@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import session from 'express-session'; 
+
 
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
@@ -10,11 +12,12 @@ import classRoutes from './routes/classRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'; // ✔ consistent naming
 import teacherRoutes from './routes/teacherRoutes.js'; // ✔ added teacher routes
 import studentRoutes from './routes/studentRoutes.js';
-// import paymentRoutes from './routes/paymentRoutes.js'; 
+import paymentRoutes from './routes/paymentRoutes.js'; 
 import passport from 'passport';     // google with login
-import session from 'express-session';
 
-dotenv.config();
+
+dotenv.config(); 
+// require('dotenv').config(); 
 
 // Initialize express app
 const app = express();
@@ -24,7 +27,10 @@ connectDB();
 
 // Middlewares
 app.use(cors());
-app.use(express.json()); // For parsing application/json
+app.use(express.json()); // For parsing application/json  
+
+
+// const session = require('express-session');
 
 
 
@@ -38,18 +44,29 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/classrooms', classRoutes);
+app.use('/api/class', classRoutes);
 app.use('/api/upload', uploadRoutes); // Mount upload route last, for clarity
 app.use('/api/teachers', teacherRoutes); //  added teacher routes
 app.use('/api/students', studentRoutes); // added student routes
-// app.use('/api/payment', paymentRoutes);
+app.use('/api/payment', paymentRoutes);
+
+
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: false
+// }));
 
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true,
+  cookie: { secure: false }
 }));
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());

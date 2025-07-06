@@ -36,4 +36,13 @@ router.put('/:id', upload.single('image'), updateTeacher);
 //  DELETE: Teacher
 router.delete('/:id', deleteTeacher);
 
+
+
+
+// router.get('/students/my', protect, authorizeRoles('teacher'), getMyStudents);
+
+
+
+
+
 export default router;

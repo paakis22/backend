@@ -4,7 +4,7 @@ import { getAllUsers, updateUser, deleteUser } from '../controllers/adminControl
 import { verifyToken, isAdmin } from '../middleware/authMiddleware.js';
 import { approveTeacher } from '../controllers/adminController.js';
 import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
-
+import { getAllPayments } from '../controllers/adminController.js'; 
 const router = express.Router(); 
 
 
@@ -13,7 +13,10 @@ const router = express.Router();
 router.get('/', verifyToken, isAdmin, getAllUsers);
 router.put('/:id', verifyToken, isAdmin, updateUser);
 router.delete('/:id', verifyToken, isAdmin, deleteUser);
-router.put('/approve/:id', protect, authorizeRoles('admin'), approveTeacher);
+router.put('/approve/:id', protect, authorizeRoles('admin'), approveTeacher); 
+
+router.get('/payments', isAdmin, getAllPayments); // Optional middleware
+
 export default router; 
 
 
