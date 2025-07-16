@@ -20,7 +20,17 @@ const storage = new CloudinaryStorage({
       resource_type: 'auto',
       public_id: `${Date.now()}-${file.originalname}`,
     };
-  },
+     },
+
+     params: {
+    folder: 'modules',
+    resource_type: 'raw', // ⬅️ for PDFs
+    allowed_formats: ['pdf']
+  }
+
+ 
 });
+
+
 
 export { cloudinary, storage };

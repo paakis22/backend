@@ -36,14 +36,25 @@ const classroomSchema = new mongoose.Schema({
   duration: String,
   zoomLink: String,
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' },
-  // image: {
-  //   url: String,
-  //   public_id: String,
-  // },
+  image: {
+    url: String,
+    public_id: String,
+  },
   students: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student'
+
   }],
+
+  teacher: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 }, { timestamps: true });
 
 export default mongoose.model('Classroom', classroomSchema);
+
+
+
+
+

@@ -2,21 +2,29 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';  
 
+
 export const protect = (req, res, next) => {
+  console.log('🔐 protect middleware hit');
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer '))
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('❌ No token provided');
     return res.status(401).json({ error: 'Unauthorized: No token' });
+  }
 
   const token = authHeader.split(' ')[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // now we can use req.user.id, req.user.role
+    console.log('✅ Token decoded:', decoded);
+    req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (err) {
+    console.log('❌ Token invalid:', err.message);
     return res.status(401).json({ error: 'Invalid token' });
   }
 };
+
 
 export const authorizeRoles = (...roles) => {
   return (req, res, next) => {
@@ -42,5 +50,8 @@ export const isAdmin = (req, res, next) => {
   next();
 };
 
+export const authMiddleware = (req, res, next) => {
+  // logic
+};
 
 

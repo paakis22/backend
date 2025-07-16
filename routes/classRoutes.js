@@ -68,8 +68,21 @@ import {
   joinClass,
   updateClass,
   deleteClass,
+  getMyClasses,
+  getStudentPaidClasses,
+  // getStudentPaidClasses
+  // getStudentClasses
 } from '../controllers/classroomController.js';
 import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
+import { getMyStudents } from '../controllers/classroomController.js';
+import { getJoinedClasses } from '../controllers/classroomController.js';
+
+
+import { authMiddleware } from '../middleware/authMiddleware.js';
+
+getStudentPaidClasses
+
+
 
 const router = express.Router();
 const upload = multer({ storage });
@@ -91,5 +104,18 @@ router.put('/:id', protect, authorizeRoles('teacher', 'admin'), upload.single('i
 
 // Delete class (teacher or admin)
 router.delete('/:id', protect, authorizeRoles('teacher', 'admin'), deleteClass);
+
+router.get('/teachers/students/my', protect, authorizeRoles('teacher'), getMyStudents);
+
+  router.get('/classes/my-joined', protect, authorizeRoles('student'), getJoinedClasses);
+  
+  router.get('/my-classes', protect, authorizeRoles('teacher'), getMyClasses);
+
+  router.get('/student/classes', protect, authorizeRoles('student'), getStudentPaidClasses);
+  router.get('/paid', authMiddleware, getAllClasses);
+
+
+  // router.get('/student/classes', protect, getStudentPaidClasses);outer.get('/student/classes', protect, getStudentPaidClasses);
+
 
 export default router;

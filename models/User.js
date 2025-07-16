@@ -9,8 +9,16 @@ const userSchema = new mongoose.Schema({
     type: String, 
     enum: ['student', 'teacher', 'admin'],
     default: 'student'
+  },
+  hasPaid: {
+    type: Boolean,
+    default: false
   }
 });
 
 const User = mongoose.model('User', userSchema);
 export default User;
+
+
+
+

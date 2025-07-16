@@ -6,7 +6,7 @@ import session from 'express-session';
 
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+ import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import classRoutes from './routes/classRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'; // ✔ consistent naming
@@ -14,7 +14,10 @@ import teacherRoutes from './routes/teacherRoutes.js'; // ✔ added teacher rout
 import studentRoutes from './routes/studentRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js'; 
 import passport from 'passport';     // google with login
-
+import answer from './routes/answerRoutes.js'; // added answer routes
+import question from './routes/questionRoutes.js'; // added question routes
+import moduleRoutes from './routes/moduleRoutes.js'; // added module routes 
+import webhookRoutes from './routes/webhookRoutes.js'; // added webhook routes
 
 dotenv.config(); 
 // require('dotenv').config(); 
@@ -27,8 +30,10 @@ connectDB();
 
 // Middlewares
 app.use(cors());
-app.use(express.json()); // For parsing application/json  
 
+app.use('/api/payment', webhookRoutes);  // Route becomes: /api/payment/stripe-webhook
+
+app.use(express.json()); // For parsing application/json  
 
 // const session = require('express-session');
 
@@ -78,12 +83,16 @@ app.get('/dashboard', (req, res) => {
 });
 
 
-
-
 // Root route
 app.get('/', (req, res) => {
   res.send(' API is running...');
 });
+
+app.use('/api/answers', answer); // added answer routes
+app.use('/api/questions', question); // added question routes
+app.use('/api/modules', moduleRoutes); // added module routes
+
+
 
 // Start server
 const PORT = process.env.PORT || 5000;

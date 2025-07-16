@@ -1,10 +1,16 @@
 
 import express from 'express';
-import { createPaymentIntent } from '../controllers/paymentController.js';
+// import { createPaymentIntent,markPaymentAsDone } from '../controllers/paymentController.js';
+import { createPaymentIntent} from '../controllers/paymentController.js';
+
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create-payment-intent', createPaymentIntent);
+router.post('/create-payment-intent',protect, createPaymentIntent);
+// router.post('/mark-done', protect, markPaymentAsDone);                          
 
-export default router;
+
+
+
+export default router;       

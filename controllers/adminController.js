@@ -1,5 +1,7 @@
 import User from '../models/User.js';
 import Payment from '../models/Payment.js'; 
+import Teacher from '../models/Teacher.js';
+
 
 
 
@@ -51,19 +53,19 @@ export const deleteUser = async (req, res) => {
 
 // Approve a teacher (Admin only) 
 
-export const approveTeacher = async (req, res) => {
-  try {
-    const teacher = await Teacher.findById(req.params.id);
-    if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
+// export const approveTeacher = async (req, res) => {
+//   try {
+//     const teacher = await teacher.findById(req.params.id);
+//     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
-    teacher.status = 'approved';
-    await teacher.save();
+//     teacher.status = 'approved';
+//     await teacher.save();
 
-    res.status(200).json({ message: 'Teacher approved' });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-};
+//     res.status(200).json({ message: 'Teacher approved' });
+//   } catch (err) {
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
 
 
 export const getAllPayments = async (req, res) => {
@@ -75,5 +77,60 @@ export const getAllPayments = async (req, res) => {
   } catch (error) {
     console.error('Error fetching payments:', error.message);
     res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+};
+
+
+
+
+// Approve a teacher (Admin only)
+
+
+
+// controllers/adminController.js
+// controllers/adminController.js
+
+
+export const approveTeacher = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updated = await Teacher.findByIdAndUpdate(
+      id,
+      { status: 'approved' },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Teacher not found' });
+    }
+
+    res.json({ message: '✅ Teacher approved successfully' });
+  } catch (err) {
+    console.error('❌ Error in approveTeacher:', err.message);
+    res.status(500).json({ error: 'Error approving teacher', detail: err.message });
+  }
+};
+
+
+
+export const rejectTeacher = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updated = await Teacher.findByIdAndUpdate(
+      id,
+      { status: 'rejected' },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Teacher not found' });
+    }
+
+    res.json({ message: '❌ Teacher rejected' });
+  } catch (err) {
+    console.error('❌ Error in rejectTeacher:', err.message);
+    res.status(500).json({ error: 'Error rejecting teacher', detail: err.message });
   }
 };

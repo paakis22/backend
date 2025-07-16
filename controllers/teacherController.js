@@ -4,12 +4,19 @@ import Teacher from '../models/Teacher.js';
 
 export const createTeacher = async (req, res) => {
   try {
-    const { name, email, bio, gender, address ,subject} = req.body;
+    const userId = req.user?.id; // ✅ Use authenticated user's ID
+
+    const { name, email, bio, gender, address, subject } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized: No user ID found in token' });
+    }
 
     const existing = await Teacher.findOne({ email });
     if (existing) return res.status(400).json({ error: 'Email already exists' });
 
     const newTeacher = await Teacher.create({
+      userId, // ✅ Now set correctly
       name,
       email,
       subject,
@@ -33,6 +40,7 @@ export const createTeacher = async (req, res) => {
     res.status(500).json({ error: 'Cannot create teacher', detail: err.message });
   }
 };
+
 
 
 // Get All
@@ -106,3 +114,60 @@ export const deleteTeacher = async (req, res) => {
 //   }
 // };
 
+
+
+
+// export const checkTeacherProfile = async (req, res) => {
+//   try {
+//     const teacher = await Teacher.findOne({ userId: req.user.id });
+//     if (!teacher) {
+//       return res.json({ hasProfile: false });
+//     }
+//     return res.json({ hasProfile: true, hasPaid: teacher.hasPaid });
+//   } catch (err) {
+//     console.error('Profile check error:', err.message);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
+
+
+
+
+export const checkTeacherProfile = async (req, res) => {
+  try {
+    const teacher = await Teacher.findOne({ userId: req.user.id });
+
+    if (!teacher) {
+      return res.json({ hasProfile: false });
+    }
+
+    return res.json({
+      hasProfile: true,
+      hasPaid: teacher.hasPaid
+    });
+  } catch (err) {
+    console.error('Profile check error:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+
+
+// export const checkTeacherProfile = async (req, res) => {
+//   try {
+//     console.log('👀 req.user.id:', req.user?.id); // Check user id received
+
+//     const teacher = await Teacher.findOne({ userId: req.user.id });
+//     console.log('🔎 teacher found:', teacher);
+
+//     if (!teacher) {
+//       return res.json({ hasProfile: false });
+//     }
+
+//     return res.json({ hasProfile: true, hasPaid: teacher.hasPaid });
+//   } catch (err) {
+//     console.error('🔥 checkTeacherProfile error:', err.message);
+//     res.status(500).json({ error: 'Error fetching teacher', detail: err.message });
+//   }
+// };

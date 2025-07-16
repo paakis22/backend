@@ -1,6 +1,8 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Payment from '../models/Payment.js';
+
 
 // Register function
 
@@ -37,6 +39,12 @@ export const login = async (req, res) => {
       expiresIn: '7d'
     }); 
 
+    let hasPaid = false;
+    if (user.role === 'student') {
+      const payment = await Payment.findOne({ userId: user._id, status: 'done' });
+      hasPaid = !!payment;
+    }
+
      res.status(200).json({
       message: 'Login successful',
       token, // ✅ Return the token
@@ -45,7 +53,8 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         Gender: user.Gender,
-        role: user.role
+        role: user.role,
+        hasPaid // ✅ Include hasPaid status
       }
     });
 
@@ -57,6 +66,69 @@ export const login = async (req, res) => {
 
 
 
+// export const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   const user = await User.findOne({ email });
+//   if (!user) return res.status(404).json({ error: 'User not found' });
+
+//   const isMatch = await user.matchPassword(password);
+//   if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
+
+//   let hasPaid = false;
+
+//   if (user.role === 'student' || user.role === 'teacher') {
+//     const payment = await Payment.findOne({ user: user._id, status: 'paid' });
+//     hasPaid = !!payment;
+//   }
+
+//   const token = generateToken(user._id);
+
+//   res.json({
+//     user: {
+//       _id: user._id,
+//       role: user.role,
+//       hasPaid // 👉 include this field explicitly in API response!
+//     },
+//     token
+//   });
+// };
 
 
-   
+
+
+// export const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   const user = await User.findOne({ email });
+//   if (!user) return res.status(404).json({ error: 'User not found' });
+
+//   const isMatch = await user.matchPassword(password);
+//   if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
+
+//   let hasProfile = false;
+//   let hasStudentProfile = false;
+
+//   if (user.role === 'teacher') {
+//     const profile = await TeacherProfile.findOne({ user: user._id });
+//     hasProfile = !!profile;
+//   }
+
+//   if (user.role === 'student') {
+//     const studentProfile = await studentProfile.findOne({ user: user._id });
+//     hasStudentProfile = !!studentProfile;
+//   }
+
+//   const token = generateToken(user._id);
+
+//   res.json({
+//     user: {
+//       _id: user._id,
+//       role: user.role,
+//       hasProfile,
+//       hasStudentProfile
+            
+//     },
+//     token
+//   });
+// };
