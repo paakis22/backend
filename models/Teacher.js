@@ -52,6 +52,8 @@ const teacherSchema = new mongoose.Schema({
     default: 'pending',
   },
   hasPaid: { type: Boolean, default: false } // ✅ track payment status
+
+
 }, { timestamps: true });
 
 export default mongoose.model('Teacher', teacherSchema);
