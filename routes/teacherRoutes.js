@@ -16,8 +16,8 @@ import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 import multer from 'multer';
 import { storage } from '../middleware/cloudinaryUpload.js'; // ✅ Make sure the filename is correct
-
-
+import { checkApprovalStatus } from '../controllers/teacherController.js';
+import { getApprovalStatus } from '../controllers/teacherController.js';
 
 const upload = multer({ storage });
 
@@ -39,7 +39,7 @@ router.post(
 router.get('/', getAllTeachers);
 
 // Get single teacher by ID
-router.get('/:id', getTeacherById);
+router.get('/:id', protect,getTeacherById);
 
 // Teacher profile image
 router.put('/:id', upload.single('image'), updateTeacher);
@@ -52,8 +52,8 @@ router.delete('/:id', deleteTeacher);
 
 router.get('/check-profile', protect, authorizeRoles('teacher'), checkTeacherProfile);
 
-
-
+router.get('/check-approval-status', protect, authorizeRoles('teacher'), checkApprovalStatus);
+router.get('/approval-status/id', protect, authorizeRoles('teacher'), getApprovalStatus);
 
 // router.get('/students/my', protect, authorizeRoles('teacher'), getMyStudents);
 

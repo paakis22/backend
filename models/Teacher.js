@@ -51,9 +51,16 @@ const teacherSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending',
   },
-  hasPaid: { type: Boolean, default: false } // ✅ track payment status
-
-
+  hasPaid: { type: Boolean, default: false }, // ✅ track payment status
+  approvalEmailSent: {
+    type: Boolean,
+    default: false,
+  },
+   fee: {
+    type: Number,
+    required: true,
+    default: 1000, // LKR or any value
+  }
 }, { timestamps: true });
 
 export default mongoose.model('Teacher', teacherSchema);

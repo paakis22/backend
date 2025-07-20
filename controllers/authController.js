@@ -45,6 +45,14 @@ export const login = async (req, res) => {
       hasPaid = !!payment;
     }
 
+  
+  
+    if (user.role === 'teacher') {
+      const payment = await Payment.findOne({ userId: user._id, status: 'done' });
+      hasPaid = !!payment;
+    }
+    
+
      res.status(200).json({
       message: 'Login successful',
       token, // ✅ Return the token
@@ -59,76 +67,51 @@ export const login = async (req, res) => {
     });
 
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Server error' });
   }
-};
+};  
 
 
 
-
-// export const loginUser = async (req, res) => {
+// export const login = async (req, res) => {
 //   const { email, password } = req.body;
 
-//   const user = await User.findOne({ email });
-//   if (!user) return res.status(404).json({ error: 'User not found' });
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ error: 'User not found' });
 
-//   const isMatch = await user.matchPassword(password);
-//   if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
 
-//   let hasPaid = false;
+//     const token = jwt.sign(
+//       { id: user._id, role: user.role },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '7d' }
+//     );
 
-//   if (user.role === 'student' || user.role === 'teacher') {
-//     const payment = await Payment.findOne({ user: user._id, status: 'paid' });
-//     hasPaid = !!payment;
+//     let hasPaid = false;
+
+//     // 🔍 If teacher, get hasPaid from Teacher model
+//     if (user.role === 'teacher') {
+//       const teacher = await teacher.findOne({ userId: user._id });
+//       hasPaid = teacher?.hasPaid || false;
+//     } else {
+//       // for student or admin
+//       hasPaid = user.hasPaid || false;
+//     }
+
+//     res.status(200).json({
+//       token,
+//       user: {
+//         id: user._id,
+//         email: user.email,
+//         role: user.role,
+//         hasPaid
+//       }
+//     });
+//   } catch (err) {
+//     console.error('❌ Login error:', err.message);
+//     res.status(500).json({ error: 'Server error' });
 //   }
-
-//   const token = generateToken(user._id);
-
-//   res.json({
-//     user: {
-//       _id: user._id,
-//       role: user.role,
-//       hasPaid // 👉 include this field explicitly in API response!
-//     },
-//     token
-//   });
-// };
-
-
-
-
-// export const loginUser = async (req, res) => {
-//   const { email, password } = req.body;
-
-//   const user = await User.findOne({ email });
-//   if (!user) return res.status(404).json({ error: 'User not found' });
-
-//   const isMatch = await user.matchPassword(password);
-//   if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
-
-//   let hasProfile = false;
-//   let hasStudentProfile = false;
-
-//   if (user.role === 'teacher') {
-//     const profile = await TeacherProfile.findOne({ user: user._id });
-//     hasProfile = !!profile;
-//   }
-
-//   if (user.role === 'student') {
-//     const studentProfile = await studentProfile.findOne({ user: user._id });
-//     hasStudentProfile = !!studentProfile;
-//   }
-
-//   const token = generateToken(user._id);
-
-//   res.json({
-//     user: {
-//       _id: user._id,
-//       role: user.role,
-//       hasProfile,
-//       hasStudentProfile
-            
-//     },
-//     token
-//   });
 // };

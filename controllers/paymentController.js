@@ -73,7 +73,7 @@ export const createPaymentIntent = async (req, res) => {
       currency,
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
-      status: 'pending'
+      status: 'done'
     });
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });

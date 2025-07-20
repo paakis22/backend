@@ -17,6 +17,7 @@ export const createTeacher = async (req, res) => {
 
     const newTeacher = await Teacher.create({
       userId, // ✅ Now set correctly
+      // userId: req.user.id, 
       name,
       email,
       subject,
@@ -98,41 +99,6 @@ export const deleteTeacher = async (req, res) => {
 
 
 
-// // controller/teacherController.js
-// export const getMyStudents = async (req, res) => {
-//   try {
-//     const classes = await Classroom.find({ teacher: req.user.id }).populate({
-//       path: 'students',
-//       select: 'name email gender', // what you want to show
-//     });
-
-//     const students = classes.flatMap(cls => cls.students); // combine all students
-
-//     res.json(students);
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to fetch students' });
-//   }
-// };
-
-
-
-
-// export const checkTeacherProfile = async (req, res) => {
-//   try {
-//     const teacher = await Teacher.findOne({ userId: req.user.id });
-//     if (!teacher) {
-//       return res.json({ hasProfile: false });
-//     }
-//     return res.json({ hasProfile: true, hasPaid: teacher.hasPaid });
-//   } catch (err) {
-//     console.error('Profile check error:', err.message);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// };
-
-
-
-
 export const checkTeacherProfile = async (req, res) => {
   try {
     const teacher = await Teacher.findOne({ userId: req.user.id });
@@ -154,20 +120,91 @@ export const checkTeacherProfile = async (req, res) => {
 
 
 
-// export const checkTeacherProfile = async (req, res) => {
+// // controllers/teacherController.js
+// // ✅ teacherController.js
+// export const checkApprovalStatus = async (req, res) => {
 //   try {
-//     console.log('👀 req.user.id:', req.user?.id); // Check user id received
-
 //     const teacher = await Teacher.findOne({ userId: req.user.id });
-//     console.log('🔎 teacher found:', teacher);
 
 //     if (!teacher) {
-//       return res.json({ hasProfile: false });
+//       return res.status(404).json({ error: 'Teacher not found' });
 //     }
 
-//     return res.json({ hasProfile: true, hasPaid: teacher.hasPaid });
+//     res.json({
+//       status: teacher.status,     // 'pending', 'approved', etc.
+//       hasPaid: teacher.hasPaid || false,
+//     });
 //   } catch (err) {
-//     console.error('🔥 checkTeacherProfile error:', err.message);
-//     res.status(500).json({ error: 'Error fetching teacher', detail: err.message });
+//     console.error('❌ Error checking approval status:', err.message);
+//     res.status(500).json({ error: 'Server error' });
 //   }
 // };
+
+
+// export const checkApprovalStatus = async (req, res) => {
+//   try {
+//     console.log('🔐 req.user:', req.user); // <--- Add this
+
+//     const teacher = await Teacher.findOne({ userId: req.user.id });
+
+//     if (!teacher) {
+//       return res.status(404).json({ error: 'Teacher not found' });
+//     }
+
+//     res.json({
+//       status: teacher.status,
+//       hasPaid: teacher.hasPaid || false,
+//     });
+//   } catch (err) {
+//     console.error('❌ Backend error checking approval:', err.message);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
+
+
+
+
+export const checkApprovalStatus = async (req, res) => {
+  try {
+    console.log('🧠 req.user:', req.user); // Check if this has .id
+    const teacher = await Teacher.findOne({ userId: req.user.id });
+
+    if (!teacher) {
+      console.log('🚫 Teacher not found for userId:', req.user.id);
+      return res.status(404).json({ error: 'Teacher not found' });
+    }
+
+    res.json({
+      status: teacher.status,
+      hasPaid: teacher.hasPaid || false,
+    });
+  } catch (err) {
+    console.error('❌ Backend error:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+
+
+
+// controllers/teacherController.js
+export const getApprovalStatus = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const teacher = await Teacher.findOne({ userId });
+
+    if (!teacher) {
+      return res.status(404).json({ error: 'Teacher not found' });
+    }
+
+    res.json({
+      status: teacher.status,
+      hasPaid: teacher.hasPaid || false,
+    });
+  } catch (err) {
+    console.error('❌ Error fetching teacher:', err.message);
+    res.status(500).json({ error: 'Error fetching teacher' });
+  }
+};
